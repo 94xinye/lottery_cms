@@ -19,7 +19,7 @@ class AdSearch extends Ad
     {
         return [
             [['id',], 'integer'],
-            [['title', 'link','created_at'], 'safe'],
+            [['title', 'link','created_at','status','type'], 'safe'],
         ];
     }
 
@@ -47,6 +47,7 @@ class AdSearch extends Ad
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=>['defaultOrder'=>['sort'=>SORT_DESC,'online_at'=>SORT_ASC]],
         ]);
 
         $this->load($params);
@@ -56,12 +57,13 @@ class AdSearch extends Ad
             // $query->where('0=1');
             return $dataProvider;
         }
-
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'status' => $this->status,
+            'type'=>$this->type,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
@@ -74,6 +76,7 @@ class AdSearch extends Ad
         }else{
             $query->andFilterWhere(['created_at'=>$createAt]);
         }
+//        echo $query->createCommand()->getRawSql();exit;
         return $dataProvider;
     }
 }

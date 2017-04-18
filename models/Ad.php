@@ -19,8 +19,11 @@ use app\components\behaviors\UploadBehavior;
  * @property string $link partner
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $online_at
+ * @property integer $offline_at
  * @method createUploadFilePath()
  * @method uploadImgFile()
+ * @property array $statuses
  */
 class Ad extends AppActiveRecord
 {
@@ -32,6 +35,10 @@ class Ad extends AppActiveRecord
      * 友情链接
      */
     const TYPE_BLOGROLL =102;
+    /**
+     * 寻宝频道
+     */
+    const TYPE_TREASURE =103;
 
     /**
      * 当前类型
@@ -42,6 +49,7 @@ class Ad extends AppActiveRecord
     static $types = [
         self::TYPE_CAROUSEL=>'轮播图',
         self::TYPE_BLOGROLL=>'友情链接',
+        self::TYPE_TREASURE=>'寻宝频道',
     ];
 
     public function init()
@@ -76,6 +84,29 @@ class Ad extends AppActiveRecord
         }
         return true;
     }
+    /**
+     * 转换时间
+     * @return array|false|int
+     */
+    public function getDatetimeToAt($t)
+    {
+        if(empty($t)){
+            return null;
+        }
+        $createAt = strtotime($t.':00');
+        return $createAt;
+    }
+    /**
+     * 转换时间
+     * @return array|false|int
+     */
+    public function getAtToDatetime($t)
+    {
+        if(empty($t)){
+            return null;
+        }
+        return date('Y-m-d H:i',$t);
+    }
     public function behaviors()
     {
         return [
@@ -91,9 +122,9 @@ class Ad extends AppActiveRecord
     public function rules()
     {
         return [
-            [['title',], 'required'],
+            [['title','online_at','offline_at'], 'required'],
             [['imageFile'], 'file', 'extensions' => 'gif, jpg, png, jpeg','mimeTypes' => 'image/jpeg, image/png',],
-            [['created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at','sort','status'], 'integer'],
             [['title'], 'string', 'max' => 50],
             [['image', 'link'], 'string', 'max' => 255],
         ];
@@ -106,12 +137,29 @@ class Ad extends AppActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => '名称',
+            'title' => '广告名称',
             'image' => '图片',
-            'imageFile' => '图片',
-            'link' => '链接',
+            'imageFile' => '图片文件',
+            'link' => '跳转链接',
             'created_at' => '创建时间',
             'updated_at' => '最后修改',
+            'online_at' => '上线时间',
+            'offline_at' => '下线时间',
+            'sort' => '排序',
+            'status' => '状态',
+        ];
+    }
+    /**
+     * 获取状态
+     * @return array
+     */
+    public function getStatuses()
+    {
+        return [
+            '1'=>'已上线',
+            '2'=>'待上线',
+            '3'=>'已下线',
+            '4'=>'禁用',
         ];
     }
     /**
@@ -120,7 +168,7 @@ class Ad extends AppActiveRecord
      */
     public static function find()
     {
-        AdQuery::$type = static::$currentType;
+//        AdQuery::$type = static::$currentType;
         return Yii::createObject(AdQuery::className(), [get_called_class()]);
     }
 }
@@ -131,7 +179,7 @@ class AdQuery extends ActiveQuery
 
     public function init()
     {
-        $this->andWhere(['type' => self::$type]);
+//        $this->andWhere(['type' => self::$type]);
         return $this;
     }
     /**

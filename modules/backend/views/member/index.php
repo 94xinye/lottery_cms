@@ -36,7 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'mobile',
                     'nickname',
-                    'headimgurl',
+                    [
+                        'label' => '头像',
+                        'format' => 'raw',
+                        'value' => function ($data) {
+                            $html = '<img width="60" src="'.$data->headimgurl.'"/>';
+                            return $html;
+                        },
+                        'options' => ['style' => 'width:60px']
+                    ],
                     [
                         'attribute' =>'score',
                         'options' => ['style' => 'width:50px']

@@ -21,7 +21,7 @@ class Config extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'config';
+        return '{{%config}}';
     }
     /**
      * @inheritdoc

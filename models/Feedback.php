@@ -29,7 +29,7 @@ class Feedback extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'feedback';
+        return '{{%feedback}}';
     }
     /**
      * @inheritdoc

@@ -85,7 +85,7 @@ class Content extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'content';
+        return  '{{%content}}';
     }
 
     public function init()

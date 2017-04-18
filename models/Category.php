@@ -33,7 +33,7 @@ class Category extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'category';
+        return '{{%category}}';
     }
     /**
      * 获取可能的全部父类

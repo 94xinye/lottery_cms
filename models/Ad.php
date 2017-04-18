@@ -54,7 +54,7 @@ class Ad extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'ad';
+        return '{{%ad}}';
     }
     public function beforeSave($insert)
     {

@@ -14,7 +14,7 @@ class AdminUserIdentity extends User
      */
     public static function tableName()
     {
-        return 'admin_user';
+        return '{{%admin_user}}';
     }
     /**
      * Validates password

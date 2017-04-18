@@ -25,7 +25,7 @@ class ContentDetail extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'content_detail';
+        return '{{%content_detail}}';
     }
 
     public function scenarios()

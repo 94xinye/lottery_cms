@@ -26,7 +26,7 @@ class AdminUser extends AppActiveRecord
      */
     public static function tableName()
     {
-        return 'admin_user';
+        return '{{%admin_user}}';
     }
 
     public function load($data, $formName = null)

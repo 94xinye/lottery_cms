@@ -23,7 +23,7 @@ class Page extends \app\components\AppActiveRecord
      */
     public static function tableName()
     {
-        return 'page';
+        return '{{%page}}';
     }
 
     /**
